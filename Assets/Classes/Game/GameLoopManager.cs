@@ -47,7 +47,7 @@ void SummonTest(){
         //Move Enemies
         NativeArray<Vector3> NodesToUse = new NativeArray<Vector3>(NodePositions, Allocator.TempJob);
         NativeArray<float> EnemySpeeds = new NativeArray<float>(EntitySummoner.EnemiesInGame.Count, Allocator.TempJob);
-        NativeArray<int> NodeIndices = new NativeArray<int>();
+        NativeArray<int> NodeIndices = new NativeArray<int>(EntitySummoner.EnemiesInGame.Count,Allocator.TempJob);
         TransformAccessArray EnemyAccess= new TransformAccessArray(EntitySummoner.EnemiesInGameTransform.ToArray(),2);
 
         for(int i=0;i<EntitySummoner.EnemiesInGame.Count;i++){
@@ -74,11 +74,16 @@ void SummonTest(){
                    EnqueueEnemyToRemove(EntitySummoner.EnemiesInGame[i]);
                }
         }
-
-        NodesToUse.Dispose();  
         EnemySpeeds.Dispose();
-        NodeIndices.Dispose();
-        EnemyAccess.Dispose();
+        Debug.Log("1");
+        NodeIndices.Dispose(); 
+           Debug.Log("2");
+        EnemyAccess.Dispose(); 
+           Debug.Log("3");
+        NodesToUse.Dispose();
+           Debug.Log("4");
+      
+       
         //Tick Towers
         //Apply Effects
         //Damge Enemies
