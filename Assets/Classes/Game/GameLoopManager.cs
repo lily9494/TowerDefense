@@ -7,7 +7,9 @@ using Unity.Jobs;
 
 public class GameLoopManager : MonoBehaviour
 {
+    public static List<TowerBehaviour> TowersInGame;
     public static Vector3[] NodePositions;
+    public static float[] NodeDistances;
     private static Queue<Enemy> EnemiesToRemove;
     private static Queue<int> EnemyIDsToSummon;
 
@@ -15,6 +17,7 @@ public class GameLoopManager : MonoBehaviour
     public bool LoopShouldEnd;
    private void Start()
     {
+        TowersInGame = new List<TowerBehaviour>();
         EnemyIDsToSummon= new Queue<int>();
         EnemiesToRemove =new Queue<Enemy>();
         EntitySummoner.Init();
@@ -24,6 +27,13 @@ public class GameLoopManager : MonoBehaviour
          for(int i=0;i<NodePositions.Length;i++)
          {
             NodePositions[i]= NodeParent.GetChild(i).position;
+         }
+
+        NodeDistances= new float[NodePositions.Length-1];
+
+         for(int i=0;i<NodeDistances.Length;i++)
+         {
+            NodeDistances[i]= Vector3.Distance(NodePositions[i], NodePositions[i+1]);
          }
         StartCoroutine(GameLoop());
         InvokeRepeating("SummonTest", 0f, 1f);
@@ -75,14 +85,18 @@ void SummonTest(){
                }
         }
         EnemySpeeds.Dispose();
-        Debug.Log("1");
+
         NodeIndices.Dispose(); 
-           Debug.Log("2");
-        EnemyAccess.Dispose(); 
-           Debug.Log("3");
-        NodesToUse.Dispose();
-           Debug.Log("4");
       
+        EnemyAccess.Dispose(); 
+      
+        NodesToUse.Dispose();
+    
+      foreach(TowerBehaviour tower in TowersInGame)
+      {
+          tower.Target = TowerTargeting.GetTarget(tower, TowerTargeting.TargetType.First);
+          tower.Tick();
+      }
        
         //Tick Towers
         //Apply Effects

@@ -20,7 +20,7 @@ public class EntitySummoner : MonoBehaviour
         EnemiesInGame =new List<Enemy>();
 
         EnemySummonData[] Enemies = Resources.LoadAll<EnemySummonData>("Enemies");
-        Debug.Log(Enemies[0].name);
+        // Debug.Log(Enemies[0].name);
         foreach(EnemySummonData enemy in Enemies){
         EnemyPrefabs.Add(enemy.EnemyID, enemy.EnemyPrefab);
         EnemyObjectPools.Add(enemy.EnemyID , new Queue<Enemy>());

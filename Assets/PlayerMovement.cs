@@ -40,9 +40,12 @@ Controller.Move(Velocity * Speed * Time.deltaTime);
 
 }
 private void MovePlayerCamera(){
-xRot-=PlayerMouseInput.y*Sensitivity;
+  if(Input.GetMouseButton(1))  {
+      xRot-=PlayerMouseInput.y*Sensitivity;
 transform.Rotate(0f, PlayerMouseInput.x* Sensitivity, 0f);
 PlayerCamera.transform.localRotation= Quaternion.Euler(xRot, 0f, 0f);
+  }
+
 }
 }
 
