@@ -1279,7 +1279,7 @@ MonoBehaviour:
     m_Bits: 2147483647
   PlacementCollidMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 119
   PlayerCamera: {fileID: 963194227}
 --- !u!1 &1537011701
 GameObject:
