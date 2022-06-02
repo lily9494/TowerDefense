@@ -19,7 +19,7 @@ public class TowerTargeting
         NativeArray<EnemyData> EnemiesToCalculate = new NativeArray<EnemyData>(EnemiesInRange.Length,Allocator.TempJob);
         NativeArray<Vector3> NodePositions = new NativeArray<Vector3>(GameLoopManager.NodePositions,Allocator.TempJob);
         NativeArray<float> NodeDistances= new NativeArray<float>(GameLoopManager.NodeDistances, Allocator.TempJob);
-        NativeArray<int> EnemyToIndex= new NativeArray<int>(new int[]{-1},Allocator.TempJob);
+        NativeArray<int> EnemyToIndex= new NativeArray<int>(new int[]{1},Allocator.TempJob);
         int EnemyIndexToReturn= -1;
 
         for(int i=0; i<EnemiesToCalculate.Length;i++)
@@ -56,7 +56,12 @@ public class TowerTargeting
         JobHandle SearchJobHandle = EnemySearchJob.Schedule(EnemiesToCalculate.Length,dependency);
 
         SearchJobHandle.Complete();
+        Debug.Log(EnemyToIndex[0]);
+        Debug.Log(EnemiesToCalculate.Length);
+        if(EnemiesToCalculate.Length>EnemyToIndex[0])
         EnemyIndexToReturn =EnemiesToCalculate[EnemyToIndex[0]].EnemyIndex;
+        else if(EnemiesToCalculate.Length<=EnemyToIndex[0])
+        EnemyIndexToReturn =-1;
 
         EnemiesToCalculate.Dispose();
         NodeDistances.Dispose();
@@ -99,7 +104,6 @@ public class TowerTargeting
              float DistanceToEnemy=0;
             switch(TargetingType){
                 case 0: //first
-
                CurrentEnemyDistanceToEnd = GetDistanceToEnd(_EnemiesToCalculate[index]);
                 if(CurrentEnemyDistanceToEnd<CompareValue)
                 {
