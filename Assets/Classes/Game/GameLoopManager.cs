@@ -7,9 +7,12 @@ using Unity.Jobs;
 
 public class GameLoopManager : MonoBehaviour
 {
+ 
     public static List<TowerBehaviour> TowersInGame;
     public static Vector3[] NodePositions;
     public static float[] NodeDistances;
+
+    private static Queue<EnemyDamageData> DamageData;
     private static Queue<Enemy> EnemiesToRemove;
     private static Queue<int> EnemyIDsToSummon;
 
@@ -17,6 +20,7 @@ public class GameLoopManager : MonoBehaviour
     public bool LoopShouldEnd;
    private void Start()
     {
+        DamageData= new Queue<EnemyDamageData>();
         TowersInGame = new List<TowerBehaviour>();
         EnemyIDsToSummon= new Queue<int>();
         EnemiesToRemove =new Queue<Enemy>();
@@ -101,8 +105,20 @@ void SummonTest(){
         //Tick Towers
         //Apply Effects
         //Damge Enemies
+           if(DamageData.Count>0){
+            for(int i=0;i<DamageData.Count;i++){
+              EnemyDamageData CurrentDamageData=DamageData.Dequeue();
+              CurrentDamageData.TargetedEnemy.Health-= CurrentDamageData.TotalDamage/CurrentDamageData.Resistance;
+             if(CurrentDamageData.TargetedEnemy.Health<=0)
+             {
+                 EnqueueEnemyToRemove(CurrentDamageData.TargetedEnemy);
+             }
+
+            }
+        }
+  
         //Remove Enemies 
-        if(EnemiesToRemove.Count>0){
+         if(EnemiesToRemove.Count>0){
             for(int i=0;i<EnemiesToRemove.Count;i++){
                EntitySummoner.RemoveEnemy(EnemiesToRemove.Dequeue()); 
             }
@@ -113,6 +129,11 @@ void SummonTest(){
       }
  
   }
+
+    public static void EnqueueDamageData(EnemyDamageData damagedata){
+        DamageData.Enqueue(damagedata);
+    }
+
   public static void EnqueueEnemyIDToSummon(int ID){
       
       EnemyIDsToSummon.Enqueue(ID);
@@ -123,7 +144,20 @@ void SummonTest(){
         EnemiesToRemove.Enqueue(EnemyToRemove);
     }
 }
+public struct EnemyDamageData {
 
+    public EnemyDamageData(Enemy target, float damage , float resistance )
+    {
+        TargetedEnemy=target;
+        TotalDamage=damage;
+        Resistance=resistance;
+    }
+
+    public Enemy TargetedEnemy;
+    public float TotalDamage;
+    public float Resistance;
+
+}
 public struct MoveEnemiesJob : IJobParallelForTransform
 {
     [NativeDisableParallelForRestriction]

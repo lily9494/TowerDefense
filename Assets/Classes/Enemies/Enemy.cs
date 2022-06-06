@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
- 
+ public float DamageResistance = 1f;
  public float MaxHealth;
  public float Health;
  public float Speed;

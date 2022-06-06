@@ -176,6 +176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6849674364399625531}
   - component: {fileID: 4492641490111059336}
+  - component: {fileID: 8130656412932087845}
   - component: {fileID: 702834257}
   m_Layer: 3
   m_Name: Basic
@@ -219,8 +220,20 @@ MonoBehaviour:
   Target: {fileID: 0}
   TowerPivot: {fileID: 6849674364399536853}
   Damage: 1
-  FireRate: 1
+  Firerate: 5
   Range: 5
+--- !u!114 &8130656412932087845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6849674364399784637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1ca441e132918840a1bc9f4b88085fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &702834257
 BoxCollider:
   m_ObjectHideFlags: 0
